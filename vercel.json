@@ -3,11 +3,5 @@
   "devCommand": "npm run dev",
   "installCommand": "npm install",
   "framework": "vite",
-  "outputDirectory": "dist",
-  "env": {
-    "VITE_GEMINI_API_KEY": "@vite_gemini_api_key",
-    "VITE_GEMINI_MODELS": "@vite_gemini_models",
-    "VITE_GEMINI_MAX_RETRIES": "@vite_gemini_max_retries",
-    "VITE_APP_URL": "@vite_app_url"
-  }
+  "outputDirectory": "dist"
 }
