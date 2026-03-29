@@ -1,0 +1,44 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    // Collection: prompts
+    // Document ID: auto-generated
+    // Fields:
+    //   - userId: string (required) - UID of the owner
+    //   - originalPrompt: string (required) - Initial text
+    //   - enhancedPrompt: string (required) - AI output
+    //   - createdAt: timestamp (required) - Creation time
+    // ===============================================================
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isValidPrompt(data) {
+      return data.keys().hasAll(['userId', 'originalPrompt', 'enhancedPrompt', 'createdAt']) &&
+             data.userId is string &&
+             data.originalPrompt is string && data.originalPrompt.size() > 0 && data.originalPrompt.size() < 10000 &&
+             data.enhancedPrompt is string && data.enhancedPrompt.size() > 0 && data.enhancedPrompt.size() < 20000 &&
+             data.createdAt is timestamp;
+    }
+
+    match /prompts/{promptId} {
+      allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow create: if isAuthenticated() && isValidPrompt(request.resource.data) && request.resource.data.userId == request.auth.uid;
+      allow delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      // No updates allowed for prompt history
+    }
+
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+    }
+  }
+}

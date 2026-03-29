@@ -1,0 +1,35 @@
+{
+  "entities": {
+    "EnhancedPrompt": {
+      "title": "Enhanced Prompt",
+      "description": "A record of an original prompt and its AI-enhanced version.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "The UID of the user who created the prompt."
+        },
+        "originalPrompt": {
+          "type": "string",
+          "description": "The initial prompt entered by the user."
+        },
+        "enhancedPrompt": {
+          "type": "string",
+          "description": "The AI-generated enhanced version of the prompt."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the prompt was enhanced."
+        }
+      },
+      "required": ["userId", "originalPrompt", "enhancedPrompt", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/prompts/{promptId}": {
+      "schema": "EnhancedPrompt",
+      "description": "A collection of enhanced prompts for each user."
+    }
+  }
+}
