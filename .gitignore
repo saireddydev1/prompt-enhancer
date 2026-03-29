@@ -7,5 +7,6 @@ coverage/
 .env*
 .env.example
 .env.local
+firebase-applet-config.json
 firebase-applet-config.js
 firebase-blueprints.js
