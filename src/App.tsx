@@ -152,7 +152,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="flex items-center gap-2 opacity-50">
             <Sparkles className="w-4 h-4" />
-            <span className="text-sm font-bold tracking-tight">PROMPTPRO</span>
+            <span className="text-sm font-bold tracking-tight">Prompt Enhancer</span>
           </div>
           <div className="flex items-center gap-8 text-xs font-medium text-white/40 uppercase tracking-widest">
             <a href="#" className="hover:text-white transition-colors">Terms</a>
