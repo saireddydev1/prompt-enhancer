@@ -91,7 +91,7 @@ export default function App() {
       <div className="min-h-screen bg-black flex items-center justify-center">
         <motion.div 
           animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
-          transition={{ duration: 2, repeat: Infinity }}
+          transition={{ duration: 1.3, repeat: Infinity }}
           className="text-white font-light tracking-widest"
         >
           LOADING...
@@ -103,7 +103,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-orange-500/30 overflow-x-hidden">
       {/* --- Background Animation --- */}
-      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none page-gradient-aurora">
         <motion.div 
           animate={{ 
             scale: [1, 1.2, 1],
@@ -111,7 +111,7 @@ export default function App() {
             x: [0, 100, 0],
             y: [0, -50, 0]
           }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
           className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br from-orange-600/20 to-transparent blur-[120px] rounded-full"
         />
         <motion.div 
@@ -121,8 +121,18 @@ export default function App() {
             x: [0, -100, 0],
             y: [0, 50, 0]
           }}
-          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-          className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gradient-to-tl from-purple-600/20 to-transparent blur-[120px] rounded-full"
+          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+          className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gradient-to-tl from-amber-500/20 to-transparent blur-[120px] rounded-full"
+        />
+        <motion.div
+          animate={{
+            scale: [1, 1.15, 1],
+            rotate: [0, 45, 0],
+            x: [0, -80, 0],
+            y: [0, -30, 0]
+          }}
+          transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
+          className="absolute top-1/3 left-1/3 w-2/3 h-2/3 bg-gradient-to-br from-cyan-500/10 to-transparent blur-[140px] rounded-full"
         />
       </div>
 
@@ -283,7 +293,7 @@ function Landing() {
                 hidden: { opacity: 0, y: 20 },
                 visible: { opacity: 1, y: 0 }
               }}
-              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-500 text-[10px] font-bold uppercase tracking-widest mb-6"
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-500 text-[10px] font-bold uppercase tracking-widest mb-6 hero-kicker-glow"
             >
               <Zap className="w-3 h-3" />
               Next-Gen Prompt Engineering
@@ -293,18 +303,18 @@ function Landing() {
                 hidden: { opacity: 0, y: 20 },
                 visible: { opacity: 1, y: 0 }
               }}
-              className="text-6xl md:text-8xl font-bold tracking-tighter leading-[0.85] mb-6"
+              className="text-6xl md:text-8xl font-bold tracking-tighter leading-[0.85] mb-6 hero-title-shadow"
             >
               BETTER <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">PROMPTS.</span> <br />
-              BETTER AI.
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-300 via-orange-500 to-amber-400 animate-hero-gradient">PROMPTS.</span> <br />
+              BETTER <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-300 via-orange-500 to-amber-400 animate-hero-gradient">AI.</span>
             </motion.h1>
             <motion.p 
               variants={{
                 hidden: { opacity: 0, y: 20 },
                 visible: { opacity: 1, y: 0 }
               }}
-              className="text-white/60 text-lg max-w-lg leading-relaxed mb-8"
+              className="text-white/60 text-lg max-w-lg leading-relaxed mb-8 hero-subtext-shimmer"
             >
               Stop guessing. Start engineering. Transform your basic ideas into 
               high-performance instructions that unlock the full potential of LLMs.
