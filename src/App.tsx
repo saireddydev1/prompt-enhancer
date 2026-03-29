@@ -247,7 +247,7 @@ function Landing() {
           <div className="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center shadow-lg shadow-orange-500/20">
             <Sparkles className="w-6 h-6 text-black" />
           </div>
-          <span className="text-xl font-bold tracking-tight">PROMPT<span className="text-orange-500">PRO</span></span>
+          <span className="text-xl font-bold tracking-tight">PROMPT <span className="text-orange-500">Enhancer</span></span>
         </div>
         <div className="hidden md:flex items-center gap-8 text-xs font-bold uppercase tracking-widest text-white/40">
           <a href="#features" className="hover:text-white transition-colors">Features</a>
@@ -307,7 +307,7 @@ function Landing() {
             >
               BETTER <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-300 via-orange-500 to-amber-400 animate-hero-gradient">PROMPTS.</span> <br />
-              BETTER <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-300 via-orange-500 to-amber-400 animate-hero-gradient">AI.</span>
+              BETTER <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-300 via-orange-500 to-amber-400 animate-hero-gradient">AI Output.</span>
             </motion.h1>
             <motion.p 
               variants={{
