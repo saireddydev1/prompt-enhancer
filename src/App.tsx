@@ -197,12 +197,33 @@ function Landing() {
     if (authCode.includes('auth/operation-not-allowed')) {
       return 'Email/password login is disabled in Firebase. Enable Email/Password sign-in method.';
     }
+    if (authCode.includes('auth/unauthorized-domain')) {
+      return 'This domain is not authorized for Google sign-in. Add your Vercel domain in Firebase Console > Authentication > Settings > Authorized domains.';
+    }
+    if (authCode.includes('auth/popup-blocked')) {
+      return 'Popup blocked by browser. The app will use redirect sign-in automatically. Please try again.';
+    }
 
     if (message.includes('auth/operation-not-allowed')) {
       return 'Email/password login is disabled in Firebase. Enable Email/Password sign-in method.';
     }
+    if (message.includes('auth/unauthorized-domain')) {
+      return 'This domain is not authorized for Google sign-in. Add your Vercel domain in Firebase Console > Authentication > Settings > Authorized domains.';
+    }
 
     return 'Authentication failed. Please try again.';
+  };
+
+  const onGoogleSignIn = async () => {
+    setAuthError(null);
+    setIsSubmitting(true);
+    try {
+      await signInWithGoogle();
+    } catch (error) {
+      setAuthError(mapFirebaseAuthError(error));
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const onSubmitAuth = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -445,7 +466,7 @@ function Landing() {
             </div>
 
             <button
-              onClick={signInWithGoogle}
+              onClick={onGoogleSignIn}
               disabled={isSubmitting}
               className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 transition-all font-semibold"
             >
@@ -546,7 +567,7 @@ function Landing() {
             <p className="text-white/40">Explore our curated collection of expert-crafted prompt templates for every use case.</p>
           </div>
           <button 
-            onClick={signInWithGoogle}
+            onClick={onGoogleSignIn}
             className="flex items-center gap-2 text-orange-500 font-bold hover:gap-4 transition-all"
           >
             Explore All <ArrowRight className="w-5 h-5" />
@@ -570,7 +591,7 @@ function Landing() {
               </div>
               <p className="text-sm text-white/60 line-clamp-3 flex-1 italic">"{template.text}"</p>
               <button 
-                onClick={signInWithGoogle}
+                onClick={onGoogleSignIn}
                 className="w-full py-3 bg-white/5 hover:bg-white/10 rounded-xl text-xs font-bold transition-all"
               >
                 Use Template
@@ -612,7 +633,7 @@ function Landing() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               transition={{ delay: 0.6 }}
-              onClick={signInWithGoogle}
+              onClick={onGoogleSignIn}
               className="inline-flex items-center gap-3 px-10 py-5 bg-black text-white rounded-2xl font-bold transition-all shadow-2xl shadow-black/20"
             >
               Get Started Now
