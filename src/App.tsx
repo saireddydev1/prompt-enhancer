@@ -616,7 +616,7 @@ function Landing() {
               transition={{ delay: 0.4 }}
               className="text-black/60 text-lg max-w-xl mx-auto font-medium"
             >
-              Join thousands of users who are unlocking the true power of AI with PromptPro.
+              Join thousands of users who are unlocking the true power of AI with PromptEnhancer.
             </motion.p>
             <motion.button 
               initial={{ opacity: 0, y: 20 }}
