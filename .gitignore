@@ -4,10 +4,12 @@ dist/
 coverage/
 .DS_Store
 *.log
-.env*
-.env.example
+.env
 .env.local
-firebase-applet-config.js
-firebase-blueprints.js
+.env.development.local
+.env.test.local
+.env.production.local
+firebase-applet-config.json
+firebase-blueprint.json
 
 .vercel
