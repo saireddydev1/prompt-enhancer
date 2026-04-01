@@ -31,7 +31,7 @@ import {
   getDocFromServer
 } from 'firebase/firestore';
 import { onAuthStateChanged, User } from 'firebase/auth';
-import { auth, db, signUpWithEmailPassword, loginWithEmailPassword, signInWithGoogle, logout } from './firebase';
+import { auth, db, signUpWithEmailPassword, loginWithEmailPassword, logout } from './firebase';
 import { cn } from './lib/utils';
 
 interface EnhancedPrompt {
@@ -227,18 +227,6 @@ function Landing() {
       } else {
         await loginWithEmailPassword(normalizedEmail, password);
       }
-    } catch (error) {
-      setAuthError(mapFirebaseAuthError(error));
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const onGoogleSignIn = async () => {
-    setAuthError(null);
-    setIsSubmitting(true);
-    try {
-      await signInWithGoogle();
     } catch (error) {
       setAuthError(mapFirebaseAuthError(error));
     } finally {
@@ -450,20 +438,6 @@ function Landing() {
                 {isSubmitting ? 'Please wait...' : authMode === 'signup' ? 'Create Account' : 'Login'}
               </button>
             </form>
-
-            <div className="relative my-5">
-              <div className="h-px bg-white/10" />
-              <span className="absolute left-1/2 -translate-x-1/2 -top-2.5 px-3 text-[10px] uppercase tracking-widest text-white/30 bg-[#141414]">or</span>
-            </div>
-
-            <button
-              onClick={onGoogleSignIn}
-              disabled={isSubmitting}
-              className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 transition-all font-semibold"
-            >
-              <Sparkles className="w-4 h-4 text-orange-500" />
-              Continue with Google
-            </button>
 
             <p className="mt-4 text-center text-xs text-white/35">
               {authMode === 'signup' ? 'Already have an account?' : 'Need an account?'}{' '}
