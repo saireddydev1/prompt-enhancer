@@ -858,7 +858,7 @@ function Dashboard({ user }: { user: User }) {
           <div className="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center shadow-lg shadow-orange-500/20">
             <Sparkles className="w-6 h-6 text-black" />
           </div>
-          <span className="text-xl font-bold tracking-tight">PROMPT<span className="text-orange-500">PRO</span></span>
+          <span className="text-xl font-bold tracking-tight">PROMPT<span className="text-orange-500"> Enhancer</span></span>
         </div>
 
         <div className="flex items-center gap-4">
