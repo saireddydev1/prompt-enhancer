@@ -31,7 +31,7 @@ import {
   getDocFromServer
 } from 'firebase/firestore';
 import { onAuthStateChanged, User } from 'firebase/auth';
-import { auth, db, signUpWithEmailPassword, loginWithEmailPassword, signInWithGoogle, logout } from './firebase';
+import { auth, db, signUpWithEmailPassword, loginWithEmailPassword, logout } from './firebase';
 import { cn } from './lib/utils';
 
 interface EnhancedPrompt {
@@ -227,18 +227,6 @@ function Landing() {
       } else {
         await loginWithEmailPassword(normalizedEmail, password);
       }
-    } catch (error) {
-      setAuthError(mapFirebaseAuthError(error));
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const onGoogleSignIn = async () => {
-    setAuthError(null);
-    setIsSubmitting(true);
-    try {
-      await signInWithGoogle();
     } catch (error) {
       setAuthError(mapFirebaseAuthError(error));
     } finally {
@@ -451,20 +439,6 @@ function Landing() {
               </button>
             </form>
 
-            <div className="relative my-5">
-              <div className="h-px bg-white/10" />
-              <span className="absolute left-1/2 -translate-x-1/2 -top-2.5 px-3 text-[10px] uppercase tracking-widest text-white/30 bg-[#141414]">or</span>
-            </div>
-
-            <button
-              onClick={onGoogleSignIn}
-              disabled={isSubmitting}
-              className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 transition-all font-semibold"
-            >
-              <Sparkles className="w-4 h-4 text-orange-500" />
-              Continue with Google
-            </button>
-
             <p className="mt-4 text-center text-xs text-white/35">
               {authMode === 'signup' ? 'Already have an account?' : 'Need an account?'}{' '}
               <button
@@ -657,6 +631,37 @@ function Dashboard({ user }: { user: User }) {
 
   const resultRef = useRef<HTMLDivElement>(null);
 
+  const mapFirestoreError = (err: unknown) => {
+    const code = (err as { code?: string } | null)?.code || '';
+    const message = (err as { message?: string } | null)?.message || '';
+
+    if (code.includes('permission-denied')) {
+      return 'Firestore permission denied. Deploy firestore.rules and make sure you are logged in.';
+    }
+    if (code.includes('unauthenticated')) {
+      return 'You must be logged in to load and save history.';
+    }
+    if (code.includes('not-found') || message.includes('not found')) {
+      return 'Firestore database not found for this project. Create Firestore in Firebase Console.';
+    }
+    if (code.includes('failed-precondition')) {
+      return 'Firestore is not enabled yet for this project. Enable Firestore in Firebase Console.';
+    }
+    return 'Could not connect to Firestore history. Check Firebase project config and deployed rules.';
+  };
+
+  const formatHistoryDate = (createdAt: any) => {
+    if (!createdAt || typeof createdAt.toDate !== 'function') {
+      return 'Saving...';
+    }
+
+    try {
+      return createdAt.toDate().toLocaleDateString();
+    } catch {
+      return 'Unknown date';
+    }
+  };
+
   // --- Step Timer ---
   useEffect(() => {
     let interval: any;
@@ -694,7 +699,7 @@ function Dashboard({ user }: { user: User }) {
       setHistory(items);
     }, (err) => {
       console.error("Firestore Error:", err);
-      setError("Failed to load history. Please check your permissions.");
+      setError(mapFirestoreError(err));
     });
 
     return () => unsubscribe();
@@ -744,7 +749,7 @@ function Dashboard({ user }: { user: User }) {
 
       const configuredModels = (import.meta.env.VITE_GEMINI_MODELS || '')
         .split(',')
-        .map((model) => model.trim())
+        .map((model: string) => model.trim())
         .filter(Boolean);
 
       const modelCandidates = configuredModels.length > 0
@@ -804,14 +809,20 @@ function Dashboard({ user }: { user: User }) {
       setEnhancedResult(result);
 
       // Save to history
-      await addDoc(collection(db, 'prompts'), {
-        userId: user.uid,
-        originalPrompt: inputPrompt,
-        enhancedPrompt: result,
-        createdAt: serverTimestamp(),
-      });
-
-      // Scroll to result
+      try {
+        await addDoc(collection(db, 'prompts'), {
+          userId: user.uid,
+          originalPrompt: inputPrompt,
+          enhancedPrompt: result,
+          createdAt: serverTimestamp(),
+        });
+      } catch (historyError) {
+        console.error('History save error:', historyError);
+        setError(`Prompt enhanced, but history could not be saved. ${mapFirestoreError(historyError)}`);
+      }
+      
+      
+    // Scroll to result
       setTimeout(() => {
         resultRef.current?.scrollIntoView({ behavior: 'smooth' });
       }, 100);
@@ -1122,7 +1133,7 @@ function Dashboard({ user }: { user: User }) {
                         <div className="flex items-start justify-between mb-4">
                           <div className="flex flex-col">
                             <span className="text-[10px] font-bold uppercase tracking-widest text-orange-500/60 mb-1">
-                              {item.createdAt?.toDate().toLocaleDateString()}
+                              {formatHistoryDate(item.createdAt)}
                             </span>
                             <p className="text-sm font-bold line-clamp-2 text-white/90">{item.originalPrompt}</p>
                           </div>
