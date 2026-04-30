@@ -295,8 +295,9 @@ function Landing() {
               }}
               className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-500 text-[10px] font-bold uppercase tracking-widest mb-6 hero-kicker-glow"
             >
+              //jsut a test
               <Zap className="w-3 h-3" />
-              Next-Gen Prompt Engineering
+              Next-Gen Prompt Engineering 
             </motion.div>
             <motion.h1 
               variants={{
